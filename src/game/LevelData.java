@@ -28,6 +28,10 @@ public class LevelData {
     private ArrayList<Node> monster = new ArrayList<Node>();
     private Pane gameRoot;
 
+    // asdasdsadasdasdasdasdsadsadadasdadsadsad
+    ////ad sadas
+    ///// asdsadsadsadas
+
     Image Tile_1 = new Image("file:src/asset/Maps/Zestaw_1/Tiles/1.png");
     Image Tile_2 = new Image("file:src/asset/Maps/Zestaw_1/Tiles/2.png");
     Image Tile_3 = new Image("file:src/asset/Maps/Zestaw_1/Tiles/3.png");
