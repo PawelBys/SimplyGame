@@ -334,7 +334,7 @@ public class PlatformGame extends Application {
 
             movePlayerY((int)playerVelocity.getY());
 
-            // dodac petle po potworach
+            // Poruszanie sie potworow  o zadaną wartosc, ze wzgledu ze to jest odswiezane non stop musimy zrobic kontrolke monster_moved
             if(monster_moved){
                 for(Node monster : levelData.getMonster()){
                     moveMonstersRight(monster,100,monster.getTranslateX(),monster.getTranslateY());
@@ -342,6 +342,7 @@ public class PlatformGame extends Application {
                 monster_moved = false;
             }
 
+            // detekcja kolizji pomiedzy potworami a graczem
             for( Node monsterki : levelData.getMonster()){
                 if(player.getBoundsInParent().intersects(monsterki.getBoundsInParent())){
                     System.out.println("ajajaajajaja");
@@ -349,6 +350,7 @@ public class PlatformGame extends Application {
                 }
             }
 
+            // detekcja kolizji pomiedzy skillem a potworem - musi byc ktorolna bo skill sie tworzy dopiero po wcisnieciu klawisza a metoda jest wywolywana non stop
             if(skill_enabled == true){
                 for( Node monsterki : levelData.getMonster()){
                     if(skills.getBoundsInParent().intersects(monsterki.getBoundsInParent())){
@@ -363,6 +365,7 @@ public class PlatformGame extends Application {
                 }
             }
 
+            // detekcja kolizji pomiedzy graczem a coinsem
             for (Node coin : levelData.getCoins()) {
                 if (player.getBoundsInParent().intersects(coin.getBoundsInParent())) {
                     coin.getProperties().put("alive", false);
