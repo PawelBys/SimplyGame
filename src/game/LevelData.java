@@ -18,8 +18,6 @@ import java.util.ArrayList;
 
 public class LevelData {
 
-    //dUPAff
-
     private ArrayList<Node> platforms = new ArrayList<Node>();
     private ArrayList<Node> coins = new ArrayList<Node>();
     private ArrayList<Node> water = new ArrayList<Node>();
@@ -29,7 +27,7 @@ public class LevelData {
     private Pane gameRoot;
 
     // asdasdsadasdasdasdasdsadsadadasdadsadsad
-    
+    ////ad sadas
     ///// asdsadsadsadas
 
     Image Tile_1 = new Image("file:src/asset/Maps/Zestaw_1/Tiles/1.png");
