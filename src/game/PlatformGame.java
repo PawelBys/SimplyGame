@@ -405,11 +405,11 @@ public class PlatformGame extends Application {
                 game_status = true;
                 label.setText("0");
                 score = 0;
+                gameRoot.setLayoutX((0));
                 initContent();
             }
 
         }
-
 
 
         private void movePlayerX(int value) {
