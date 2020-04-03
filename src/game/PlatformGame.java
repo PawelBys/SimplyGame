@@ -71,6 +71,7 @@ public class PlatformGame extends Application {
         public boolean skill_limited = true;
         public boolean skill_enabled = false;
         public boolean monster_moved = true;
+        public boolean game_status = true;
 
         LevelData levelData = new LevelData(gameRoot);
 
@@ -226,9 +227,9 @@ public class PlatformGame extends Application {
             Line line2 = new Line();
             Image test =new Image("file:src/asset/Golem_02_Jump Start_000.png");
             changeImgae((Rectangle) monster, test);
-            System.out.println(monster.getTranslateX());
+            /*System.out.println(monster.getTranslateX());
             System.out.println(monster.getTranslateY());
-
+*/
             line2.setStartX(monster.getTranslateX());
             line2.setEndX(monster.getTranslateX()+value);
 
@@ -257,8 +258,8 @@ public class PlatformGame extends Application {
             Line line2 = new Line();
             Image test =new Image("file:src/asset/golem.png");
             changeImgae((Rectangle) monster, test);
-            System.out.println(monster.getTranslateX());
-            System.out.println(monster.getTranslateY());
+            /*System.out.println(monster.getTranslateX());
+            System.out.println(monster.getTranslateY());*/
 
             line2.setStartX(monster.getTranslateX());
             line2.setEndX(monster.getTranslateX()-value);
@@ -345,7 +346,11 @@ public class PlatformGame extends Application {
             // detekcja kolizji pomiedzy potworami a graczem
             for( Node monsterki : levelData.getMonster()){
                 if(player.getBoundsInParent().intersects(monsterki.getBoundsInParent())){
-                    System.out.println("ajajaajajaja");
+                    if((boolean)monsterki.getProperties().get("alive")){
+                        System.out.println("ajajaajajaja");
+                        //monsterki.getProperties().put("alive",false);
+                        game_status = false;
+                    }
                     //gameRoot.getChildren().remove(player);
                 }
             }
@@ -382,7 +387,7 @@ public class PlatformGame extends Application {
                 }
             }
 
-            if(player.getTranslateY() > 1000){
+            if(player.getTranslateY() > 1000 || !game_status){
                 System.out.println("GAMEOVER");
                 gameRoot.getChildren().removeAll(player,skills);
                 for(Node platform : levelData.getPlatforms()){
@@ -397,9 +402,12 @@ public class PlatformGame extends Application {
                 gameRoot.getChildren().remove(label);
                 appRoot.getChildren().removeAll(gameRoot, uiRoot);
                 monster_moved=true;
+                game_status = true;
+                label.setText("0");
                 score = 0;
                 initContent();
             }
+
         }
 
 
