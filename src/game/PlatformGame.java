@@ -381,7 +381,27 @@ public class PlatformGame extends Application {
                     gameRoot.getChildren().remove(coin);
                 }
             }
+
+            if(player.getTranslateY() > 1000){
+                System.out.println("GAMEOVER");
+                gameRoot.getChildren().removeAll(player,skills);
+                for(Node platform : levelData.getPlatforms()){
+                    gameRoot.getChildren().removeAll(platform);
+                }
+                for(Node monster : levelData.getMonster()){
+                    gameRoot.getChildren().removeAll(monster);
+                }
+                for(Node coins : levelData.getCoins()){
+                    gameRoot.getChildren().removeAll(coins);
+                }
+                gameRoot.getChildren().remove(label);
+                appRoot.getChildren().removeAll(gameRoot, uiRoot);
+                monster_moved=true;
+                score = 0;
+                initContent();
+            }
         }
+
 
 
         private void movePlayerX(int value) {
