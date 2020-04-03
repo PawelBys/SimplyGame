@@ -170,33 +170,33 @@ public class PlatformGame extends Application {
             Rectangle bg = new Rectangle(1280, 720);
             bg.setFill(new ImagePattern(tlo));
 
+            // dlugosc mapy
             levelWidth = 34 * 60;
 
-            levelData.createLevel2();
+            // tworzenie odpowiedniego lvl
+            levelData.createLevel1();
 
+            // tworzenie playera
             player = createEntity(0, 600, 60, 55, PLAYER_IMG);
 
-
-
-
+            // listener na jego aktualny offset
             player.translateXProperty().addListener((obs, old, newValue) -> {
                 offset_aktualny = newValue.intValue();
-                //System.out.println("obs" +obs);
-                //System.out.println("old" +old);
-                /*System.out.println("P - " + offset_poczatkowy);
-                System.out.println("A - " + offset_aktualny);*/
                 System.out.print(player.getTranslateX());
                 System.out.print(" - " +player.getTranslateY() + "\n");
 
-                // obsluga kamery
+                // obsluga kamery jezeli sie postac przesuwa to mapa razem z nia
                 if (offset_aktualny > 640 && offset_aktualny < levelWidth - 640) {
                     gameRoot.setLayoutX(-(offset_aktualny - 640));
                 }
             });
+
+            // dodanie wszystkiego do panelu
             gameRoot.getChildren().add(label);
             appRoot.getChildren().addAll(bg, gameRoot, uiRoot);
         }
 
+        // funkcja do animacji skila postaci
         public void showSkill(Node skill , int value){
             skill_enabled = true;
             Line line = new Line();
@@ -221,6 +221,7 @@ public class PlatformGame extends Application {
             });
         }
 
+        // animacja potworkow w prawo (nalezy zwrocic uwage ze konieczne jest ustawienie set bo zapetlenie amiacji musi odnosic sie do nowych wspolrzedncych
         public void moveMonstersRight(Node monster, int value , double x , double y){
             Line line2 = new Line();
             Image test =new Image("file:src/asset/Golem_02_Jump Start_000.png");
@@ -251,7 +252,7 @@ public class PlatformGame extends Application {
                 }
             });
         }
-
+        // animacja potworkow w lewo
         public void moveMonstersLeft(Node monster, int value , double x , double y){
             Line line2 = new Line();
             Image test =new Image("file:src/asset/golem.png");
@@ -283,32 +284,34 @@ public class PlatformGame extends Application {
         }
 
         private void update() {
+            // obluga klawiszy - W skok
             if (isPressed(KeyCode.W) && player.getTranslateY() >= 5) {
                 jumpPlayer();
             }
-
+            // obsluga klawisza Q - funkcyjny - skill
             if (isPressed(KeyCode.Q) && player.getTranslateY() >= 5) {
                 Image test = new Image("file:src/asset/skile/efecto_fuego_00032.png");
+                // zmienna do nalozenia limitu jednego skilla naraz na ekranie
                 if(skill_limited){
                     skill_limited = false;
                     skills = createEntity((int)player.getTranslateX() + 50 , (int)player.getTranslateY() + 20,40,30,test);
                     showSkill(skills,50);
                 }
             }
-
-
+            // obsluga klawisza A - idziemy w lewo
             if (isPressed(KeyCode.A) && player.getTranslateX() >= 5) {
                 movePlayerX(-5);
-
+                // na podstawie offsetu jest zrobiona animacja
                 if(offset_aktualny + 10 < offset_poczatkowy){
                     offset_poczatkowy = offset_aktualny;
+                    // funkcja zmienia zdjecie do wyboru 1-3
                     changeImgae((Rectangle) player,HeroLeft[k]);
                 }
+                // sterowanie zmiana zdjecia
                 k++;
                 if(k==3){
                     k = 0;
                 }
-
             }else if (isPressed(KeyCode.D) && player.getTranslateX() + 40 <= levelWidth - 5) {
                 movePlayerX(5);
 
@@ -333,10 +336,9 @@ public class PlatformGame extends Application {
 
             // dodac petle po potworach
             if(monster_moved){
-                moveMonstersRight(levelData.getMonster().get(2),100 , levelData.getMonster().get(2).getTranslateX() , levelData.getMonster().get(2).getTranslateY());
-                moveMonstersRight(levelData.getMonster().get(1),100 , levelData.getMonster().get(1).getTranslateX() , levelData.getMonster().get(1).getTranslateY());
-                moveMonstersRight(levelData.getMonster().get(0),100 , levelData.getMonster().get(0).getTranslateX() , levelData.getMonster().get(0).getTranslateY());
-
+                for(Node monster : levelData.getMonster()){
+                    moveMonstersRight(monster,100,monster.getTranslateX(),monster.getTranslateY());
+                }
                 monster_moved = false;
             }
 

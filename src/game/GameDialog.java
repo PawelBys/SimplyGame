@@ -9,6 +9,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.Random;
+
 public class GameDialog extends Stage {
 
     private Text textQuestion = new Text();
@@ -17,6 +19,39 @@ public class GameDialog extends Stage {
 
     private boolean correct = false;
 
+    String[] QuestionArray = new String[]{
+            "Pytanie1",
+            "Pytanie2",
+            "Pytanie3",
+            "Pytanie4",
+            "Pytanie5",
+            "Pytanie6",
+            "Pytanie7",
+            "Pytanie8",
+            "Pytanie9",
+            "Pytanie10"
+    };
+    String[] AnswerArray = new String[]{
+            "Odp1",
+            "Odp2",
+            "Odp3",
+            "Odp4",
+            "Odp5",
+            "Odp6",
+            "Odp7",
+            "Odp8",
+            "Odp9",
+            "Odp10"
+    };
+
+    public int GenerateNumber(){
+        int number;
+        Random generator = new Random();
+        number = generator.nextInt(10);
+        return number;
+    }
+
+
     public GameDialog() {
         Button btnSubmit = new Button("Submit");
         btnSubmit.setOnAction(event -> {
@@ -24,6 +59,9 @@ public class GameDialog extends Stage {
             textActualAnswer.setVisible(true);
             correct = textActualAnswer.getText().equals(fieldAnswer.getText().trim());
         });
+
+
+
 
         VBox vbox = new VBox(10, textQuestion, fieldAnswer, textActualAnswer, btnSubmit);
         vbox.setAlignment(Pos.CENTER);
@@ -34,10 +72,11 @@ public class GameDialog extends Stage {
     }
 
     public void open() {
-        textQuestion.setText("What is 2x2?");
+        int number = GenerateNumber();
+        textQuestion.setText(QuestionArray[number]);
         fieldAnswer.setText("");
         fieldAnswer.setEditable(true);
-        textActualAnswer.setText("4");
+        textActualAnswer.setText(AnswerArray[number]);
         textActualAnswer.setVisible(false);
 
         show();
