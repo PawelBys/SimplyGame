@@ -172,7 +172,7 @@ public class PlatformGame extends Application {
 
             levelWidth = 34 * 60;
 
-            levelData.createLevel();
+            levelData.createLevel2();
 
             player = createEntity(0, 600, 60, 55, PLAYER_IMG);
 

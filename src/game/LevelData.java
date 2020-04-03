@@ -20,11 +20,10 @@ public class LevelData {
 
     private ArrayList<Node> platforms = new ArrayList<Node>();
     private ArrayList<Node> coins = new ArrayList<Node>();
-
-
-
-    private ArrayList<Node> monsters = new ArrayList<Node>();
     private ArrayList<Node> water = new ArrayList<Node>();
+    private ArrayList<Node> doors = new ArrayList<Node>();
+    private ArrayList<Node> chests = new ArrayList<Node>();
+    private ArrayList<Node> monster = new ArrayList<Node>();
     private Pane gameRoot;
 
     Image Tile_1 = new Image("file:src/asset/Maps/Zestaw_1/Tiles/1.png");
@@ -41,9 +40,26 @@ public class LevelData {
     Image Tile_c = new Image("file:src/asset/Maps/Zestaw_1/Tiles/c.png");
     Image Tile_d = new Image("file:src/asset/Maps/Zestaw_1/Tiles/d.png");
     Image Tile_e = new Image("file:src/asset/Maps/Zestaw_1/Tiles/e.png");
+    Image Tile_z = new Image("file:src/asset/rozne/door.png");
     Image Tile_y = new Image("file:src/asset/rozne/chest.png");
     Image Tile_x = new Image("file:src/asset/rozne/000_0041_coin5.png");
     Image Tile_m = new Image("file:src/asset/Golem_02_Jump Start_000.png");
+
+    Image Tile_2_1 = new Image("file:src/asset/Maps/Zestaw_3/Tiles_rock/1.png");
+    Image Tile_2_2 = new Image("file:src/asset/Maps/Zestaw_3/Tiles_rock/2.png");
+    Image Tile_2_3 = new Image("file:src/asset/Maps/Zestaw_3/Tiles_rock/3.png");
+    Image Tile_2_4 = new Image("file:src/asset/Maps/Zestaw_3/Tiles_rock/4.png");
+    Image Tile_2_5 = new Image("file:src/asset/Maps/Zestaw_3/Tiles_rock/5.png");
+    Image Tile_2_6 = new Image("file:src/asset/Maps/Zestaw_3/Tiles_rock/6.png");
+    Image Tile_2_7 = new Image("file:src/asset/Maps/Zestaw_3/Tiles_rock/7.png");
+    Image Tile_2_8 = new Image("file:src/asset/Maps/Zestaw_3/Tiles_rock/8.png");
+
+    Image Tile_3_1 = new Image("file:src/asset/Maps/Zestaw_4/1.png");
+    Image Tile_3_2 = new Image("file:src/asset/Maps/Zestaw_4/2.png");
+    Image Tile_3_3 = new Image("file:src/asset/Maps/Zestaw_4/3.png");
+    Image Tile_3_4 = new Image("file:src/asset/Maps/Zestaw_4/4.png");
+    Image Tile_3_5 = new Image("file:src/asset/Maps/Zestaw_4/5.png");
+    Image Tile_3_6 = new Image("file:src/asset/Maps/Zestaw_4/6.png");
 
 
     public LevelData(Pane gameRoot) {
@@ -62,7 +78,35 @@ public class LevelData {
             "00000000000000x0000000000000000000",
             "000m000000000abc0000x0000130000000",
             "0001222300000000000123000460m00000",
-            "12285556991223999128569978de222300"
+            "12285556991223999128569978de222222"
+    };
+    public static final String[] LEVEL2 = new String[]{
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000m00y000000000x0000000",
+            "0000522226000122230000000040000000",
+            "40m0000000000000000000000000000000",
+            "00123000x000000x000012230000000000",
+            "00000522260008522600000000m0000000",
+            "0000000000000700000000000052222600",
+            "0000000000000700000000040000000000",
+            "0000000000000700z00000400000000000",
+            "1230040052260701222223000000000000"
+    };
+    public static final String[] LEVEL3 = new String[]{
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000mx0000000",
+            "00y00000000000000000000002222000000",
+            "0022000000000000000000000000000000",
+            "0000x0000000000000000000000000000z",
+            "00022200000000000000000x0000012222",
+            "0000000000002200000000222000155555",
+            "00000mx000000000000200000000455555",
+            "0000012223000000200000000000455555",
+            "0000155555300000000000000000455555",
+            "00015555555222300y000m000y00455555",
+            "1225555555555552222222222222555555"
     };
 
 
@@ -77,7 +121,7 @@ public class LevelData {
         return entity;
     }
 
-    public void createLevel()
+    public void createLevel1()
     {
 
         for (int i = 0; i < LEVEL1.length; i++) {
@@ -152,8 +196,124 @@ public class LevelData {
                         coins.add(coin);
                         break;
                     case 'm':
-                        Node monster = createEntity2(j*60,i*60,60,60,Tile_m);
-                        monsters.add(monster);
+                        Node monsterek = createEntity2(j * 60, i * 60, 60, 60, Tile_m);
+                        monster.add(monsterek);
+                        break;
+                }
+            }
+        }
+    }
+    public void createLevel2(){
+        for (int i = 0; i < LEVEL2.length; i++) {
+            String line = LevelData.LEVEL2[i];
+            for (int j = 0; j < line.length(); j++) {
+
+                switch (line.charAt(j)) {
+                    case '0':
+                        break;
+                    case '1':
+                        Node platform1 = createEntity2(j * 60, i * 60, 60, 60, Tile_2_1);
+                        platforms.add(platform1);
+                        break;
+                    case '2':
+                        Node platform2 = createEntity2(j * 60, i * 60, 60, 60, Tile_2_2);
+                        platforms.add(platform2);
+                        break;
+                    case '3':
+                        Node platform3 = createEntity2(j * 60, i * 60, 60, 60, Tile_2_3);
+                        platforms.add(platform3);
+                        break;
+                    case '4':
+                        Node platform4 = createEntity2(j * 60, i * 60, 60, 60, Tile_2_4);
+                        platforms.add(platform4);
+                        break;
+                    case '5':
+                        Node platform5 = createEntity2(j * 60, i * 60, 60, 60, Tile_2_5);
+                        platforms.add(platform5);
+                        break;
+                    case '6':
+                        Node platform6 = createEntity2(j * 60, i * 60, 60, 60, Tile_2_6);
+                        platforms.add(platform6);
+                        break;
+                    case '7':
+                        Node platform7 = createEntity2(j * 60, i * 60, 60, 60, Tile_2_7);
+                        platforms.add(platform7);
+                        break;
+                    case '8':
+                        Node platform8 = createEntity2(j * 60, i * 60, 60, 60, Tile_2_8);
+                        platforms.add(platform8);
+                        break;
+
+                    case 'y':
+                        Node platformy = createEntity2(j * 60, i * 70, 40, 40, Tile_y);
+                        platforms.add(platformy);
+                        break;
+                    case 'x':
+                        Node coin = createEntity2(j * 60, i * 60, 60, 60, Tile_x);
+                        coins.add(coin);
+                        break;
+                    case 'z':
+                        Node door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
+                        doors.add(door);
+                        break;
+                    case 'm':
+                        Node monsterek = createEntity2(j * 60, i * 60, 60, 60, Tile_m);
+                        monster.add(monsterek);
+                        break;
+                }
+            }
+        }
+    }
+
+    public void createLevel(){
+        for (int i = 0; i < LEVEL3.length; i++) {
+            String line = LevelData.LEVEL3[i];
+            for (int j = 0; j < line.length(); j++) {
+
+                switch (line.charAt(j)) {
+                    case '0':
+                        break;
+                    case '1':
+                        Node platform1 = createEntity2(j * 60, i * 60, 60, 60, Tile_3_1);
+                        platforms.add(platform1);
+                        break;
+                    case '2':
+                        Node platform2 = createEntity2(j * 60, i * 60, 60, 60, Tile_3_2);
+                        platforms.add(platform2);
+                        break;
+                    case '3':
+                        Node platform3 = createEntity2(j * 60, i * 60, 60, 60, Tile_3_3);
+                        platforms.add(platform3);
+                        break;
+                    case '4':
+                        Node platform4 = createEntity2(j * 60, i * 60, 60, 60, Tile_3_4);
+                        platforms.add(platform4);
+                        break;
+                    case '5':
+                        Node platform5 = createEntity2(j * 60, i * 60, 60, 60, Tile_3_5);
+                        platforms.add(platform5);
+                        break;
+                    case '6':
+                        Node platform6 = createEntity2(j * 60, i * 60, 60, 60, Tile_3_6);
+                        platforms.add(platform6);
+                        break;
+
+                    case 'y':
+                        Node platformy = createEntity2(j * 60, i * 70, 40, 40, Tile_y);
+                        chests.add(platformy);
+                        break;
+                    case 'x':
+                        Node coin = createEntity2(j * 60, i * 60, 60, 60, Tile_x);
+                        coins.add(coin);
+                        break;
+                    case 'z':
+                        Node door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
+                        doors.add(door);
+                        break;
+                    case 'm':
+                        Node monsterek = createEntity2(j * 60, i * 60, 60, 60, Tile_m);
+                        monster.add(monsterek);
+                        break;
                 }
             }
         }
@@ -166,8 +326,11 @@ public class LevelData {
     public ArrayList<Node> getCoins() {
         return coins;
     }
+    public ArrayList<Node> getChests() {
+        return chests;
+    }
 
     public ArrayList<Node> getMonster() {
-        return monsters;
+        return monster;
     }
 }
