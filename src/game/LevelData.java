@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class LevelData {
 
-    //dUPAff
+   //czesc
 
     private ArrayList<Node> platforms = new ArrayList<Node>();
     private ArrayList<Node> coins = new ArrayList<Node>();
@@ -27,10 +27,6 @@ public class LevelData {
     private ArrayList<Node> chests = new ArrayList<Node>();
     private ArrayList<Node> monster = new ArrayList<Node>();
     private Pane gameRoot;
-
-    // asdasdsadasdasdasdasdsadsadadasdadsadsad
-    
-    ///// asdsadsadsadas
 
     Image Tile_1 = new Image("file:src/asset/Maps/Zestaw_1/Tiles/1.png");
     Image Tile_2 = new Image("file:src/asset/Maps/Zestaw_1/Tiles/2.png");
