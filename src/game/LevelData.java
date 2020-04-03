@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 public class LevelData {
 
+    //dUPAff
+
     private ArrayList<Node> platforms = new ArrayList<Node>();
     private ArrayList<Node> coins = new ArrayList<Node>();
     private ArrayList<Node> water = new ArrayList<Node>();
