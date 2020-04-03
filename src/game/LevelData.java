@@ -27,6 +27,7 @@ public class LevelData {
     private Pane gameRoot;
 
     // problemy gita
+    //sa pojebane
 
     Image Tile_1 = new Image("file:src/asset/Maps/Zestaw_1/Tiles/1.png");
     Image Tile_2 = new Image("file:src/asset/Maps/Zestaw_1/Tiles/2.png");
