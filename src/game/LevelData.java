@@ -22,6 +22,7 @@ public class LevelData {
     private ArrayList<Node> coins = new ArrayList<Node>();
     private ArrayList<Node> water = new ArrayList<Node>();
     private ArrayList<Node> doors = new ArrayList<Node>();
+    Node next_lever_door;
     private ArrayList<Node> chests = new ArrayList<Node>();
     private ArrayList<Node> monster = new ArrayList<Node>();
 
@@ -113,6 +114,21 @@ public class LevelData {
             "1225555555555552222222222222555555"
     };
 
+    public static final String[] LEVEL_MULTI = new String[]{
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "0000000000000000000000000000000000",
+            "1111111111111111111111111111111111"
+    };
+
 
     public Node createEntity2(int x, int y, int w, int h, Image image) {
         Rectangle entity = new Rectangle(w, h);
@@ -123,6 +139,24 @@ public class LevelData {
         gameRoot.getChildren().add(entity);
 
         return entity;
+    }
+
+    public void createMulti(){
+
+        for (int i = 0; i < LEVEL_MULTI.length; i++) {
+            String line = LevelData.LEVEL_MULTI[i];
+            for (int j = 0; j < line.length(); j++) {
+
+                switch (line.charAt(j)) {
+                    case '0':
+                        break;
+                    case '1':
+                        Node platform1 = createEntity2(j * 60, i * 60, 60, 60, Tile_1);
+                        platforms.add(platform1);
+                        break;
+                }
+            }
+        }
     }
 
     public void createLevel1()
@@ -206,6 +240,7 @@ public class LevelData {
                     case 'u':
                         Node door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
                         doors.add(door);
+                        next_lever_door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
                         break;
                 }
             }
@@ -263,6 +298,7 @@ public class LevelData {
                     case 'z':
                         Node door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
                         doors.add(door);
+                        next_lever_door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
                         break;
                     case 'm':
                         Node monsterek = createEntity2(j * 60, i * 60, 60, 60, Tile_m);
@@ -317,6 +353,7 @@ public class LevelData {
                     case 'z':
                         Node door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
                         doors.add(door);
+                        next_lever_door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
                         break;
                     case 'm':
                         Node monsterek = createEntity2(j * 60, i * 60, 60, 60, Tile_m);
@@ -368,5 +405,9 @@ public class LevelData {
         }
         doors.remove(0);
 
+    }
+
+    public Node getNext_lever_door() {
+        return next_lever_door;
     }
 }

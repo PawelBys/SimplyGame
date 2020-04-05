@@ -1,5 +1,7 @@
 package main_pack;
 
+import game.MultiGame;
+import game.PlatformGame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -41,8 +43,7 @@ public class multi_3_Controller implements Initializable {
         HERO_2 = hero_2;
         player_1_hero.setText(HERO_1);
         player_2_hero.setText(HERO_2);
-        //test = new Image("../asset/postacie/Zombie 2/PNG/Poses HD/character_zombie_behindBack.png");
-
+        
     }
 
     public void single(ActionEvent actionEvent) throws IOException {
@@ -84,5 +85,13 @@ public class multi_3_Controller implements Initializable {
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         window.setScene(nextScene);
         window.show();
+    }
+
+    public void lets_play_multi(ActionEvent actionEvent) throws Exception {
+        Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        MultiGame multiGame = new MultiGame();
+        multiGame.setHero(HERO_1,HERO_2);
+        multiGame.setUser(USER);;
+        multiGame.start(window);
     }
 }

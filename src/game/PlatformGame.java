@@ -226,7 +226,7 @@ public class PlatformGame extends Application {
             skill_enabled = true;
             Line line = new Line();
             line.setStartX(skill.getTranslateX()+15);
-            line.setEndX(skill.getTranslateX()+100);
+            line.setEndX(skill.getTranslateX()+value);
             line.setStartY(skill.getTranslateY()+15);
             line.setEndY(skill.getTranslateY()+15);
             PathTransition pathTransition = new PathTransition();
@@ -319,8 +319,18 @@ public class PlatformGame extends Application {
                 // zmienna do nalozenia limitu jednego skilla naraz na ekranie
                 if(skill_limited){
                     skill_limited = false;
+                    skills = createEntity((int)player.getTranslateX() - 50 , (int)player.getTranslateY() + 20,40,30,test);
+                    showSkill(skills,-100);
+                }
+            }
+            // obsluga klawisza Q - funkcyjny - skill
+            if (isPressed(KeyCode.E) && player.getTranslateY() >= 5) {
+                Image test = new Image("file:src/asset/skile/efecto_fuego_00032.png");
+                // zmienna do nalozenia limitu jednego skilla naraz na ekranie
+                if(skill_limited){
+                    skill_limited = false;
                     skills = createEntity((int)player.getTranslateX() + 50 , (int)player.getTranslateY() + 20,40,30,test);
-                    showSkill(skills,50);
+                    showSkill(skills,100);
                 }
             }
             // obsluga klawisza A - idziemy w lewo
@@ -416,23 +426,21 @@ public class PlatformGame extends Application {
             }
 
             // obsluga kolizji z drzwiami
-            for(Node door : levelData.getDoors()){
-                if(player.getBoundsInParent().intersects(door.getBoundsInParent())){
-                    if((boolean)door.getProperties().get("alive")){
-
-                        System.out.println("Next level");
+                if(player.getBoundsInParent().intersects(levelData.next_lever_door.getBoundsInParent())){
+                    if((boolean)levelData.next_lever_door.getProperties().get("alive")){
                         game_level++;
-                        if(game_level == 2){
+                        if(game_level == 4){
                             running = false;
                             System.out.println("Brawo " + USER+ " zdobyles  " + score + "pkt");
                         }else{
-                            door.getProperties().put("alive",false);
+                            levelData.next_lever_door.getProperties().put("alive",false);
                             next_level(game_level);
+                            System.out.println("Next level");
                         }
 
                     }
                 }
-            }
+
 
             for (Iterator<Node> it = levelData.getCoins().iterator(); it.hasNext(); ) {
                 Node coin = it.next();
