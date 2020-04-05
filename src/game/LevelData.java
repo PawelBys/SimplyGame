@@ -24,6 +24,7 @@ public class LevelData {
     private ArrayList<Node> doors = new ArrayList<Node>();
     private ArrayList<Node> chests = new ArrayList<Node>();
     private ArrayList<Node> monster = new ArrayList<Node>();
+
     private Pane gameRoot;
 
     // problemy gita
@@ -74,13 +75,13 @@ public class LevelData {
             "0000000000000000000000000000000000",
             "0000000000000000000y00000000000000",
             "0000000abc000abc00abc0000000000000",
-            "0000000000000000000000000000000000",
-            "0000000000000000000000000000000000",
+            "00000000000000000000000000000000y0",
+            "0000000000000000000000000000000abc",
             "0000abc00m000000000000000000000000",
-            "000000000abc0000000000000000000000",
+            "000000000abc000000000000000abc0000",
             "00000000000000x0000000000000000000",
             "000m000000000abc0000x0000130000000",
-            "0001222300000000000123000460m00000",
+            "0001222300000000000123000460m0000u",
             "12285556991223999128569978de222222"
     };
     public static final String[] LEVEL2 = new String[]{
@@ -191,16 +192,20 @@ public class LevelData {
                         platforms.add(platforme);
                         break;
                     case 'y':
-                        Node platformy = createEntity2(j * 60, i * 70, 40, 40, Tile_y);
-                        platforms.add(platformy);
+                        Node chest = createEntity2(j * 60, i * 60, 60, 60, Tile_y);
+                        coins.add(chest);
                         break;
                     case 'x':
                         Node coin = createEntity2(j * 60, i * 60, 60, 60, Tile_x);
-                        coins.add(coin);
+                        chests.add(coin);
                         break;
                     case 'm':
                         Node monsterek = createEntity2(j * 60, i * 60, 60, 60, Tile_m);
                         monster.add(monsterek);
+                        break;
+                    case 'u':
+                        Node door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
+                        doors.add(door);
                         break;
                 }
             }
@@ -249,11 +254,11 @@ public class LevelData {
 
                     case 'y':
                         Node platformy = createEntity2(j * 60, i * 70, 40, 40, Tile_y);
-                        platforms.add(platformy);
+                        coins.add(platformy);
                         break;
                     case 'x':
                         Node coin = createEntity2(j * 60, i * 60, 60, 60, Tile_x);
-                        coins.add(coin);
+                        chests.add(coin);
                         break;
                     case 'z':
                         Node door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
@@ -268,7 +273,7 @@ public class LevelData {
         }
     }
 
-    public void createLevel(){
+    public void createLevel3(){
         for (int i = 0; i < LEVEL3.length; i++) {
             String line = LevelData.LEVEL3[i];
             for (int j = 0; j < line.length(); j++) {
@@ -303,11 +308,11 @@ public class LevelData {
 
                     case 'y':
                         Node platformy = createEntity2(j * 60, i * 70, 40, 40, Tile_y);
-                        chests.add(platformy);
+                        coins.add(platformy);
                         break;
                     case 'x':
                         Node coin = createEntity2(j * 60, i * 60, 60, 60, Tile_x);
-                        coins.add(coin);
+                        chests.add(coin);
                         break;
                     case 'z':
                         Node door = createEntity2(j * 60, i * 60, 60, 60, Tile_z);
@@ -335,5 +340,33 @@ public class LevelData {
 
     public ArrayList<Node> getMonster() {
         return monster;
+    }
+
+    public ArrayList<Node> getDoors() {
+        return doors;
+    }
+
+    public ArrayList<Node> getWater() {
+        return water;
+    }
+
+    public void deleteAll(){
+        for(int i = 0 ; i < platforms.size() ; i++){
+            platforms.remove(i);
+        }
+        for(int i = 0 ; i < coins.size() ; i++){
+            coins.remove(i);
+        }
+        for(int i = 0 ; i < chests.size() ; i++){
+            chests.remove(i);
+        }
+        for(int i = 0 ; i < monster.size(); i++){
+            monster.remove(i);
+        }
+        for(int i = 0 ; i < water.size() ; i++){
+            water.remove(i);
+        }
+        doors.remove(0);
+
     }
 }

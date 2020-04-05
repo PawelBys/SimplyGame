@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -14,10 +15,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -35,7 +38,7 @@ public class PlatformGame extends Application {
         int score = 0;
 
         private Pane appRoot = new Pane();
-        private Pane gameRoot = new Pane();
+        private Pane gameRoot;
         private Pane uiRoot = new Pane();
 
 
@@ -57,9 +60,10 @@ public class PlatformGame extends Application {
 
         int offset_aktualny;
         int offset_poczatkowy = 0;
+        int game_level = 1;
 
 
-        Image tlo = new Image("file:src/asset/Maps/background/game_background_2.png");
+
 
         int k = 0;
 
@@ -73,7 +77,10 @@ public class PlatformGame extends Application {
         public boolean monster_moved = true;
         public boolean game_status = true;
 
-        LevelData levelData = new LevelData(gameRoot);
+        LevelData levelData;
+        Image tlo1 = new Image("file:src/asset/Maps/background/game_background_2.png");
+        Image tlo3 = new Image("file:src/asset/Maps/background/background2.png");
+        Image tlo2 = new Image("file:src/asset/Maps/background/Background.png");
 
 
         public void setUser(String User){
@@ -164,18 +171,33 @@ public class PlatformGame extends Application {
         }
 
 
-        private void initContent() {
+        private void initContent(int poziom) {
             System.out.println(USER);
             System.out.println(HERO);
 
             Rectangle bg = new Rectangle(1280, 720);
-            bg.setFill(new ImagePattern(tlo));
+
+
+            gameRoot = new Pane();
 
             // dlugosc mapy
             levelWidth = 34 * 60;
-
+            levelData =  new LevelData(gameRoot);
             // tworzenie odpowiedniego lvl
-            levelData.createLevel1();
+            switch (poziom){
+                case 1:
+                    levelData.createLevel1();
+                    bg.setFill(new ImagePattern(tlo1));
+                    break;
+                case 2:
+                    levelData.createLevel2();
+                    bg.setFill(new ImagePattern(tlo2));
+                    break;
+                case 3:
+                    levelData.createLevel3();
+                    bg.setFill(new ImagePattern(tlo3));
+                    break;
+            }
 
             // tworzenie playera
             player = createEntity(0, 600, 60, 55, PLAYER_IMG);
@@ -193,7 +215,9 @@ public class PlatformGame extends Application {
             });
 
             // dodanie wszystkiego do panelu
+            label.setLayoutX(offset_poczatkowy);
             gameRoot.getChildren().add(label);
+
             appRoot.getChildren().addAll(bg, gameRoot, uiRoot);
         }
 
@@ -379,6 +403,37 @@ public class PlatformGame extends Application {
                 }
             }
 
+            for(Node chest : levelData.getChests()){
+                if(player.getBoundsInParent().intersects(chest.getBoundsInParent())){
+                    if((boolean)chest.getProperties().get("alive")){
+                        System.out.println("o kurwa");
+                        score += 10;
+                        chest.getProperties().put("alive",false);
+                        label.setText(String.valueOf(score));
+                        gameRoot.getChildren().remove(chest);
+                    }
+                }
+            }
+
+            // obsluga kolizji z drzwiami
+            for(Node door : levelData.getDoors()){
+                if(player.getBoundsInParent().intersects(door.getBoundsInParent())){
+                    if((boolean)door.getProperties().get("alive")){
+
+                        System.out.println("Next level");
+                        game_level++;
+                        if(game_level == 2){
+                            running = false;
+                            System.out.println("Brawo " + USER+ " zdobyles  " + score + "pkt");
+                        }else{
+                            door.getProperties().put("alive",false);
+                            next_level(game_level);
+                        }
+
+                    }
+                }
+            }
+
             for (Iterator<Node> it = levelData.getCoins().iterator(); it.hasNext(); ) {
                 Node coin = it.next();
                 if (!(Boolean)coin.getProperties().get("alive")) {
@@ -388,29 +443,95 @@ public class PlatformGame extends Application {
             }
 
             if(player.getTranslateY() > 1000 || !game_status){
-                System.out.println("GAMEOVER");
-                gameRoot.getChildren().removeAll(player,skills);
-                for(Node platform : levelData.getPlatforms()){
-                    gameRoot.getChildren().removeAll(platform);
-                }
-                for(Node monster : levelData.getMonster()){
-                    gameRoot.getChildren().removeAll(monster);
-                }
-                for(Node coins : levelData.getCoins()){
-                    gameRoot.getChildren().removeAll(coins);
-                }
-                gameRoot.getChildren().remove(label);
-                appRoot.getChildren().removeAll(gameRoot, uiRoot);
-                monster_moved=true;
-                game_status = true;
-                label.setText("0");
-                score = 0;
-                gameRoot.setLayoutX((0));
-                initContent();
+                game_over();
+            }
+
+            if (offset_aktualny > 640 && offset_aktualny < levelWidth - 640) {
+                label.setLayoutX(offset_aktualny - 640);
             }
 
         }
 
+        public void game_over(){
+            game_level = 1;
+            System.out.println("GAMEOVER");
+            /*gameRoot.getChildren().removeAll(player,skills);
+            for(Node platform : levelData.getPlatforms()){
+                platform.getProperties().put("alive" , false);
+                gameRoot.getChildren().removeAll(platform);
+
+            }
+            for(Node monster : levelData.getMonster()){
+                monster.getProperties().put("alive" , false);
+                gameRoot.getChildren().removeAll(monster);
+            }
+            for(Node coins : levelData.getCoins()){
+                coins.getProperties().put("alive" , false);
+                gameRoot.getChildren().removeAll(coins);
+            }
+            for(Node water : levelData.getWater()){
+                water.getProperties().put("alive" , false);
+                gameRoot.getChildren().removeAll(water);
+            }
+            for(Node doors : levelData.getDoors()){
+                doors.getProperties().put("alive" , false);
+                gameRoot.getChildren().removeAll(doors);
+            }*/
+
+            //levelData.deleteAll();
+
+            //gameRoot.getChildren().remove(label);
+            appRoot.getChildren().removeAll(gameRoot, uiRoot);
+            monster_moved=true;
+            game_status = true;
+            //gameRoot.setLayoutX((0));
+            label.setLayoutX(offset_aktualny);
+            label.setText("0");
+            score = 0;
+            offset_poczatkowy = offset_aktualny;
+
+
+            initContent(1);
+        }
+
+        public void next_level(int poziom){
+           /* gameRoot.getChildren().removeAll(player,skills);
+            for(Node platform : levelData.getPlatforms()){
+                platform.getProperties().put("alive" , false);
+                gameRoot.getChildren().removeAll(platform);
+
+            }
+            for(Node monster : levelData.getMonster()){
+                monster.getProperties().put("alive" , false);
+                gameRoot.getChildren().removeAll(monster);
+            }
+            for(Node coins : levelData.getCoins()){
+                coins.getProperties().put("alive" , false);
+                gameRoot.getChildren().removeAll(coins);
+            }
+            for(Node water : levelData.getWater()){
+                water.getProperties().put("alive" , false);
+                gameRoot.getChildren().removeAll(water);
+            }
+
+            for(Node door : levelData.getDoors()){
+                door.getProperties().put("alive",false);
+                gameRoot.getChildren().removeAll(door);
+            }*/
+
+            levelData.deleteAll();
+
+            //gameRoot.getChildren().remove(label);
+            appRoot.getChildren().removeAll(gameRoot, uiRoot);
+            monster_moved=true;
+            game_status = true;
+            //gameRoot.setLayoutX((0));
+            label.setLayoutX(offset_aktualny);
+            offset_poczatkowy = offset_aktualny;
+
+
+            initContent(poziom);
+        }
 
         private void movePlayerX(int value) {
             boolean movingRight = value > 0;
@@ -484,10 +605,18 @@ public class PlatformGame extends Application {
             return keys.getOrDefault(key, false);
         }
 
+        public void add_points(){
+            score+=30;
+        }
+        public void update_label(){
+            label.setText(String.valueOf(score));
+        }
+
+
 
         @Override
         public void start(Stage primaryStage) throws Exception {
-            initContent();
+            initContent(1);
 
             Scene scene = new Scene(appRoot);
             scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
@@ -511,6 +640,8 @@ public class PlatformGame extends Application {
                         dialog.setOnCloseRequest(event -> {
                             if (dialog.isCorrect()) {
                                 System.out.println("Correct");
+                                add_points();
+                                update_label();
                             }
                             else {
                                 System.out.println("Wrong");

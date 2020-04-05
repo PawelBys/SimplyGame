@@ -36,9 +36,9 @@ public class Controller implements Initializable {
         String username = getUserName.textProperty().get();
         String password = getUserPassword.textProperty().get();
 
-        /*DbConnector db = new DbConnector();
-        db.polaczenie_z_baza();*/
-        /*try {
+        DbConnector db = new DbConnector();
+        DbConnector.polaczenie_z_baza();
+        try {
             if(db.logInToGame(username,password)){
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("menu_layout.fxml"));
@@ -57,9 +57,9 @@ public class Controller implements Initializable {
             e.printStackTrace();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
-        FXMLLoader loader = new FXMLLoader();
+        /*FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("menu_layout.fxml"));
         Parent nextRoot = loader.load();
         menu_Controller menu = loader.getController();
@@ -68,7 +68,7 @@ public class Controller implements Initializable {
         Scene nextScene = new Scene(nextRoot);
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         window.setScene(nextScene);
-        window.show();
+        window.show();*/
 
     }
 
