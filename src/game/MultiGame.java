@@ -21,14 +21,17 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 public class MultiGame extends Application {
 
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
     private ArrayList<Node> shot = new ArrayList<Node>();
-    Label label = new Label("SCORE");
-    StringBuilder your_score = new StringBuilder(label.getText());
-    int score = 0;
+    Label label = new Label("100");
+    Label label2 = new Label("100");
+    int hp_hero1 , hp_hero2;
+
+
 
     private Pane appRoot = new Pane();
     private Pane gameRoot;
@@ -38,6 +41,7 @@ public class MultiGame extends Application {
     private Node player;
     private Node player2;
     private Node skills;
+    private Node skills2;
 
     private Point2D playerVelocity = new Point2D(0, 0);
     private Point2D playerVelocity2 = new Point2D(0, 0);
@@ -60,10 +64,6 @@ public class MultiGame extends Application {
 
     int offset_aktualny2;
     int offset_poczatkowy2 = 0;
-    int game_level = 1;
-
-
-
 
     int k = 0;
 
@@ -79,14 +79,13 @@ public class MultiGame extends Application {
 
     public boolean skill_limited = true;
     public boolean skill_enabled = false;
+    public boolean skill_limited2 = true;
+    public boolean skill_enabled2 = false;
     public boolean monster_moved = true;
     public boolean game_status = true;
 
     LevelData levelData;
     Image tlo1 = new Image("file:src/asset/Maps/background/game_background_2.png");
-    Image tlo3 = new Image("file:src/asset/Maps/background/background2.png");
-    Image tlo2 = new Image("file:src/asset/Maps/background/Background.png");
-
 
     public void setUser(String User){
         this.USER = User;
@@ -276,7 +275,8 @@ public class MultiGame extends Application {
 
         // tworzenie playera
         player = createEntity(0, 600, 60, 55, PLAYER_IMG);
-        player2 = createEntity(60, 600, 60, 55, PLAYER_IMG2);
+        player2 = createEntity(600, 600, 60, 55, PLAYER_IMG2);
+        hp_hero1 = hp_hero2 = 100;
 
         // listener na jego aktualny offset
         player.translateXProperty().addListener((obs, old, newValue) -> {
@@ -302,7 +302,9 @@ public class MultiGame extends Application {
         });
 
         // dodanie wszystkiego do panelu
-        label.setLayoutX(offset_poczatkowy);
+        label.setLayoutX(0);
+        label2.setLayoutX(600);
+        gameRoot.getChildren().add(label2);
         gameRoot.getChildren().add(label);
 
         appRoot.getChildren().addAll(bg, gameRoot, uiRoot);
@@ -327,6 +329,30 @@ public class MultiGame extends Application {
             public void handle(ActionEvent actionEvent) {
                 skill_enabled = false;
                 skill_limited = true;
+                gameRoot.getChildren().remove(skill);
+
+            }
+        });
+    }
+
+    public void showSkill2(Node skill , int value){
+        skill_enabled2 = true;
+        Line line = new Line();
+        line.setStartX(skill.getTranslateX()+15);
+        line.setEndX(skill.getTranslateX()+value);
+        line.setStartY(skill.getTranslateY()+15);
+        line.setEndY(skill.getTranslateY()+15);
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setNode(skill);
+        pathTransition.setDuration(Duration.seconds(0.5));
+        pathTransition.setPath(line);
+        pathTransition.play();
+
+        pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                skill_enabled2 = false;
+                skill_limited2 = true;
                 gameRoot.getChildren().remove(skill);
 
             }
@@ -400,20 +426,20 @@ public class MultiGame extends Application {
         if (isPressed(KeyCode.U) && player2.getTranslateY() >= 5) {
             Image test = new Image("file:src/asset/skile/efecto_fuego_00032.png");
             // zmienna do nalozenia limitu jednego skilla naraz na ekranie
-            if(skill_limited){
-                skill_limited = false;
-                skills = createEntity((int)player2.getTranslateX() - 50 , (int)player2.getTranslateY() + 20,40,30,test);
-                showSkill(skills,-100);
+            if(skill_limited2){
+                skill_limited2 = false;
+                skills2 = createEntity((int)player2.getTranslateX() - 50 , (int)player2.getTranslateY() + 20,40,30,test);
+                showSkill2(skills2,-100);
             }
         }
         // obsluga klawisza Q - funkcyjny - skill
         if (isPressed(KeyCode.O) && player2.getTranslateY() >= 5) {
             Image test = new Image("file:src/asset/skile/efecto_fuego_00032.png");
             // zmienna do nalozenia limitu jednego skilla naraz na ekranie
-            if(skill_limited){
-                skill_limited = false;
-                skills = createEntity((int)player2.getTranslateX() + 50 , (int)player2.getTranslateY() + 20,40,30,test);
-                showSkill(skills,100);
+            if(skill_limited2){
+                skill_limited2 = false;
+                skills2 = createEntity((int)player2.getTranslateX() + 50 , (int)player2.getTranslateY() + 20,40,30,test);
+                showSkill2(skills2,100);
             }
         }
         // obsluga klawisza A - idziemy w lewo
@@ -445,24 +471,36 @@ public class MultiGame extends Application {
             changeImgae((Rectangle) player2,HeroStay2);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // detekcja kolizji
+        if(skill_enabled == true){
+            if(skills.getBoundsInParent().intersects(player2.getBoundsInParent())) {
+                if ((boolean) player2.getProperties().get("alive")) {
+                    if(hp_hero2 <= 0){
+                        System.out.println("o kurwa");
+                        player2.getProperties().put("alive", false);
+                        gameRoot.getChildren().remove(player2);
+                    }else{
+                        hp_hero2 -= getRandomNumberInRange(1,3);
+                        label2.setText(String.valueOf(hp_hero2));
+                    }
+                }
+            }
+        }
+        // detekcja kolizji
+        if(skill_enabled2 == true){
+            if(skills2.getBoundsInParent().intersects(player.getBoundsInParent())) {
+                if ((boolean) player.getProperties().get("alive")) {
+                    if(hp_hero1 <=0 ){
+                        System.out.println("o kurwa");
+                        player.getProperties().put("alive", false);
+                        gameRoot.getChildren().remove(player);
+                    }else{
+                        hp_hero1 -= getRandomNumberInRange(1,2);
+                        label.setText(String.valueOf(hp_hero1));
+                    }
+                }
+            }
+        }
 
 
         if (playerVelocity.getY() < 10) {
@@ -476,7 +514,6 @@ public class MultiGame extends Application {
 
         movePlayerY((int)playerVelocity.getY());
         movePlayerY2((int)playerVelocity2.getY());
-
 
 
         if (offset_aktualny > 640 && offset_aktualny < levelWidth - 640) {
@@ -541,6 +578,16 @@ public class MultiGame extends Application {
     }
 
 
+    private static int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
+    }
+
 
     // ##################  PLAYER 2 ##############
     private void movePlayerX2(int value) {
@@ -574,7 +621,7 @@ public class MultiGame extends Application {
                     if (movingDown) {
                         if (player2.getTranslateY() + 55 == platform.getTranslateY()) {
                             player2.setTranslateY(player2.getTranslateY() - 1);
-                            canJump = true;
+                            canJump2 = true;
                             return;
                         }
                     }

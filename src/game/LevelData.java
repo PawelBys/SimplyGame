@@ -151,7 +151,7 @@ public class LevelData {
                     case '0':
                         break;
                     case '1':
-                        Node platform1 = createEntity2(j * 60, i * 60, 60, 60, Tile_1);
+                        Node platform1 = createEntity2(j * 60, i * 60, 60, 60, Tile_2);
                         platforms.add(platform1);
                         break;
                 }
