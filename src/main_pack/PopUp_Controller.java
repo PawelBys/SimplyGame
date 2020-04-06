@@ -20,7 +20,11 @@ public class PopUp_Controller implements Initializable {
     String HERO;
     int SCORE;
     Stage game_stage;
+    PlatformGame moja_gra;
 
+    public void myPlatformGame(PlatformGame game){
+        moja_gra = game;
+    }
 
     public void set_hero(String herosik){
         HERO = herosik;
@@ -46,6 +50,15 @@ public class PopUp_Controller implements Initializable {
     }
 
     public void try_again(ActionEvent actionEvent) throws Exception {
+        Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        PlatformGame platformGame = new PlatformGame();
+        platformGame.setUser(USER);
+        platformGame.setHero(HERO);
+        platformGame.getStage(window);
+        platformGame.start(window);
+
+        /*Stage window2 = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        window2.close();*/
 
     }
 

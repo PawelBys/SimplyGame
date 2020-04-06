@@ -37,7 +37,7 @@ public class PlatformGame extends Application {
 
         private Pane appRoot = new Pane();
         private Pane gameRoot;
-        private Pane uiRoot = new Pane();
+        private Pane uiRoot;
 
 
         private Node player;
@@ -179,6 +179,7 @@ public class PlatformGame extends Application {
 
 
             gameRoot = new Pane();
+            uiRoot = new Pane();
 
             // dlugosc mapy
             levelWidth = 34 * 60;
@@ -439,6 +440,7 @@ public class PlatformGame extends Application {
                             loader.setLocation(getClass().getResource("/fxml/PopUp_Layout.fxml"));
                             Parent nextRoot = loader.load();
                             PopUp_Controller popup = loader.getController();
+                            popup.myPlatformGame(this);
                             popup.set_stage(my_Stage);
                             popup.set_hero(HERO);
                             popup.user_and_score(USER,score);
@@ -448,6 +450,8 @@ public class PlatformGame extends Application {
                             window.setScene(nextScene);
                             window.show();
 
+                            Stage stage = (Stage) appRoot.getScene().getWindow();
+                            stage.close();
 
                         }else{
                             levelData.next_lever_door.getProperties().put("alive",false);
