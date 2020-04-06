@@ -1,7 +1,6 @@
 package main_pack;
 
 import game.MultiGame;
-import game.PlatformGame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -48,7 +47,7 @@ public class multi_3_Controller implements Initializable {
 
     public void single(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("single_layout.fxml"));
+        loader.setLocation(getClass().getResource("/fxml/single_layout.fxml"));
         Parent nextRoot = loader.load();
         single_Controller single_controller = loader.getController();
         single_controller.hello_user(USER);
@@ -61,7 +60,7 @@ public class multi_3_Controller implements Initializable {
 
     public void multi(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("multi_1_layout.fxml"));
+        loader.setLocation(getClass().getResource("/fxml/multi_1_layout.fxml"));
         Parent nextRoot = loader.load();
         multi_1_Controller multi = loader.getController();
         multi.hello_user(USER);
@@ -80,7 +79,7 @@ public class multi_3_Controller implements Initializable {
 
     public void logout(ActionEvent actionEvent) throws IOException {
         USER = null;
-        Parent nextRoot = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Parent nextRoot = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
         Scene nextScene = new Scene(nextRoot);
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         window.setScene(nextScene);

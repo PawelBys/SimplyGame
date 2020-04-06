@@ -39,7 +39,7 @@ public class register_Controller implements Initializable {
             DbConnector db = new DbConnector();
             db.add_user(username,password);
 
-            Parent nextRoot = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Parent nextRoot = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
             Scene nextScene = new Scene(nextRoot);
             Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
             window.setScene(nextScene);

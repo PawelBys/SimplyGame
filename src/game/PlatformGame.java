@@ -5,29 +5,27 @@ import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import main_pack.PopUp_Controller;
+import main_pack.multi_2_Controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
 
 public class PlatformGame extends Application {
 
@@ -81,6 +79,8 @@ public class PlatformGame extends Application {
         Image tlo1 = new Image("file:src/asset/Maps/background/game_background_2.png");
         Image tlo3 = new Image("file:src/asset/Maps/background/background2.png");
         Image tlo2 = new Image("file:src/asset/Maps/background/Background.png");
+
+        Stage my_Stage;
 
 
         public void setUser(String User){
@@ -171,7 +171,7 @@ public class PlatformGame extends Application {
         }
 
 
-        private void initContent(int poziom) {
+        public void initContent(int poziom) {
             System.out.println(USER);
             System.out.println(HERO);
 
@@ -308,7 +308,7 @@ public class PlatformGame extends Application {
             });
         }
 
-        private void update() {
+        private void update() throws IOException {
             // obluga klawiszy - W skok
             if (isPressed(KeyCode.W) && player.getTranslateY() >= 5) {
                 jumpPlayer();
@@ -429,9 +429,26 @@ public class PlatformGame extends Application {
                 if(player.getBoundsInParent().intersects(levelData.next_lever_door.getBoundsInParent())){
                     if((boolean)levelData.next_lever_door.getProperties().get("alive")){
                         game_level++;
-                        if(game_level == 4){
+                        if(game_level == 2){
                             running = false;
                             System.out.println("Brawo " + USER+ " zdobyles  " + score + "pkt");
+
+
+
+                            FXMLLoader loader = new FXMLLoader();
+                            loader.setLocation(getClass().getResource("/fxml/PopUp_Layout.fxml"));
+                            Parent nextRoot = loader.load();
+                            PopUp_Controller popup = loader.getController();
+                            popup.set_stage(my_Stage);
+                            popup.set_hero(HERO);
+                            popup.user_and_score(USER,score);
+
+                            Scene nextScene = new Scene(nextRoot);
+                            Stage window = new Stage();
+                            window.setScene(nextScene);
+                            window.show();
+
+
                         }else{
                             levelData.next_lever_door.getProperties().put("alive",false);
                             next_level(game_level);
@@ -620,6 +637,10 @@ public class PlatformGame extends Application {
             label.setText(String.valueOf(score));
         }
 
+        public void getStage(Stage myStage){
+            this.my_Stage = myStage;
+        }
+
 
 
         @Override
@@ -637,7 +658,11 @@ public class PlatformGame extends Application {
                 @Override
                 public void handle(long now) {
                     if (running) {
-                        update();
+                        try {
+                            update();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     if (dialogEvent) {

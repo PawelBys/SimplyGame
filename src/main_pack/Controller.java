@@ -41,7 +41,7 @@ public class Controller implements Initializable {
         try {
             if(db.logInToGame(username,password)){
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("menu_layout.fxml"));
+                loader.setLocation(getClass().getResource("/fxml/menu_layout.fxml"));
                 Parent nextRoot = loader.load();
                 menu_Controller menu = loader.getController();
                 menu.hello_user(getUserName.getText());
@@ -73,7 +73,7 @@ public class Controller implements Initializable {
     }
 
     public void goRegister(MouseEvent mouseEvent) throws IOException {
-        Parent nextRoot = FXMLLoader.load(getClass().getResource("register_layout.fxml"));
+        Parent nextRoot = FXMLLoader.load(getClass().getResource("/fxml/register_layout.fxml"));
         Scene nextScene = new Scene(nextRoot);
         Stage window = (Stage) ((Node)mouseEvent.getSource()).getScene().getWindow();
         window.setScene(nextScene);
