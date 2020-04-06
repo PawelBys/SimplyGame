@@ -20,28 +20,28 @@ public class GameDialog extends Stage {
     private boolean correct = false;
 
     String[] QuestionArray = new String[]{
-            "Pytanie1",
-            "Pytanie2",
-            "Pytanie3",
-            "Pytanie4",
-            "Pytanie5",
-            "Pytanie6",
-            "Pytanie7",
-            "Pytanie8",
-            "Pytanie9",
-            "Pytanie10"
+            "Karta graficzna to GPU, a procesor?",
+            "Oprogramowanie to software, a sprzęt?",
+            "Pamięć operacyjna komputera to:",
+            "Dysk talerzony inaczej nazywamy:",
+            "Pamięci półprzewodnikowe z interfejsem SATA",
+            "Czy HDMI to złącze komercyjne? tak/nie",
+            "1 B= ? b",
+            "Częstotliwość zegara podajemy w:",
+            "Model barw stosowany w monitorach",
+            "Model barw stosowany w drukarkach"
     };
     String[] AnswerArray = new String[]{
-            "Odp1",
-            "Odp2",
-            "Odp3",
-            "Odp4",
-            "Odp5",
-            "Odp6",
-            "Odp7",
-            "Odp8",
-            "Odp9",
-            "Odp10"
+            "CPU",
+            "hardware",
+            "RAM",
+            "HDD",
+            "SSD",
+            "tak",
+            "8",
+            "MHz",
+            "RGB",
+            "CMYK"
     };
 
     public int GenerateNumber(){
