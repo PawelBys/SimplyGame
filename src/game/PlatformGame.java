@@ -430,7 +430,7 @@ public class PlatformGame extends Application {
                 if(player.getBoundsInParent().intersects(levelData.next_lever_door.getBoundsInParent())){
                     if((boolean)levelData.next_lever_door.getProperties().get("alive")){
                         game_level++;
-                        if(game_level == 2){
+                        if(game_level == 4){
                             running = false;
                             System.out.println("Brawo " + USER+ " zdobyles  " + score + "pkt");
 

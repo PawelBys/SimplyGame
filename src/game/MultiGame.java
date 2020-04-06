@@ -5,8 +5,10 @@ import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -17,7 +19,10 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import main_pack.PopUp2_Controller;
+import main_pack.PopUp_Controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -361,7 +366,7 @@ public class MultiGame extends Application {
 
 
 
-    private void update() {
+    private void update() throws IOException {
         // obluga klawiszy - W skok
         if (isPressed(KeyCode.W) && player.getTranslateY() >= 5) {
             jumpPlayer();
@@ -479,6 +484,21 @@ public class MultiGame extends Application {
                         System.out.println("o kurwa");
                         player2.getProperties().put("alive", false);
                         gameRoot.getChildren().remove(player2);
+
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/fxml/PopUp2_Layout.fxml"));
+                        Parent nextRoot = loader.load();
+                        PopUp2_Controller popup = loader.getController();
+                        popup.set_hero(HERO,HERO2);
+                        popup.user(USER);
+
+                        Scene nextScene = new Scene(nextRoot);
+                        Stage window = new Stage();
+                        window.setScene(nextScene);
+                        window.show();
+
+                        Stage stage = (Stage) appRoot.getScene().getWindow();
+                        stage.close();
                     }else{
                         hp_hero2 -= getRandomNumberInRange(1,3);
                         label2.setText(String.valueOf(hp_hero2));
@@ -494,6 +514,21 @@ public class MultiGame extends Application {
                         System.out.println("o kurwa");
                         player.getProperties().put("alive", false);
                         gameRoot.getChildren().remove(player);
+
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/fxml/PopUp2_Layout.fxml"));
+                        Parent nextRoot = loader.load();
+                        PopUp2_Controller popup = loader.getController();
+                        popup.set_hero(HERO2,HERO);
+                        popup.user(USER);
+
+                        Scene nextScene = new Scene(nextRoot);
+                        Stage window = new Stage();
+                        window.setScene(nextScene);
+                        window.show();
+
+                        Stage stage = (Stage) appRoot.getScene().getWindow();
+                        stage.close();
                     }else{
                         hp_hero1 -= getRandomNumberInRange(1,2);
                         label.setText(String.valueOf(hp_hero1));
@@ -516,9 +551,10 @@ public class MultiGame extends Application {
         movePlayerY2((int)playerVelocity2.getY());
 
 
-        if (offset_aktualny > 640 && offset_aktualny < levelWidth - 640) {
-            label.setLayoutX(offset_aktualny - 640);
-        }
+        /*if (offset_aktualny > 640 && offset_aktualny < levelWidth - 640) {
+            label.setLayoutX(offset_aktualny - 100);
+            label2.setLayoutX(offset_aktualny2 - 100);
+        }*/
 
     }
 
@@ -680,7 +716,11 @@ public class MultiGame extends Application {
             @Override
             public void handle(long now) {
                 if (running) {
-                    update();
+                    try {
+                        update();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };

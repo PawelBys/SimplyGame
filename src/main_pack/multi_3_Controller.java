@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class multi_3_Controller implements Initializable {
@@ -71,7 +72,17 @@ public class multi_3_Controller implements Initializable {
         window.show();
     }
 
-    public void show_score(ActionEvent actionEvent) {
+    public void show_score(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/ShowScore_layout.fxml"));
+        Parent nextRoot = loader.load();
+        ShowScore_Controller temp = loader.getController();
+        temp.hello_user(USER);
+        temp.set_10_top_players();
+        Scene nextScene = new Scene(nextRoot);
+        Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        window.setScene(nextScene);
+        window.show();
     }
 
     public void show_hero(ActionEvent actionEvent) {
@@ -90,7 +101,7 @@ public class multi_3_Controller implements Initializable {
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         MultiGame multiGame = new MultiGame();
         multiGame.setHero(HERO_1,HERO_2);
-        multiGame.setUser(USER);;
+        multiGame.setUser(USER);
         multiGame.start(window);
     }
 }
